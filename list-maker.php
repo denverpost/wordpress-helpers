@@ -15,7 +15,7 @@
     </head>
     <body class="body-copy">
         <h1>List Markup Maker</h1>
-        <p>Add &gt;li>'s to each line.</p>
+        <p>Add &lt;li>'s to each line. Helps most when producing recipes.</p>
 <?php
 if ( isset($_POST['content']) ):
 ?>
