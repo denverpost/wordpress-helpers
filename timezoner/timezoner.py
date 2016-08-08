@@ -12,16 +12,46 @@ class Timezoner:
     def __init__(self):
         """
             """
-        pass
+        self.times = []
+        self.regexes = [
+                # 3-7 p.m. & 12:30-1:30 a.m.
+                '([0-9]{1,2})([:0-9]{3})?-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.)',
+                # 8 a.m.-6 p.m. & 10:30 a.m.-3 p.m. & 11 a.m.-1 a.m.
+                '([0-9]{1,2})([:0-9]{3})? ?a\.m\.-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.)',
+                # Noon-5 p.m. & Noon-3:30 a.m.
+                #'Noon-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.)',
+                # 9 a.m.-Midnight
+                #'([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.)',
+                ]
+
+    def replace_midnights(self, text):
+        """ Replace all noons and midnights in the text with 12 p.m. and 12 a.m.,
+            or vice versa.
+            We know which way we want to replace if there are no instances of noon/midnight.
+            """
+        if 'Noon' not in text and 'Midnight' not in text:
+            text = text.replace('12 a.m.', 'Midnight')
+            text = text.replace('12 p.m.', 'Noon')
+        else:
+            text = text.replace('Midnight', '12 a.m.')
+            text = text.replace('Noon', '12 p.m.')
+        return text
 
     def extract_parts(self, text):
         """ Extract all the times and time ranges, returns a dict.
             Dict will include original and replacement strings.
             Regex will seek out times that match these patterns:
-                8 a.m.-6 p.m.
-                12:30-1:30 a.m.
-                Noon-5 p.m.
                 3-7 p.m.
+                12:30-1:30 a.m.
+                8 a.m.-6 p.m.
+                10:30 a.m.-3 p.m.
+                11 a.m.-1 a.m.
+                12:30 p.m.-11 p.m.
+                #Noon-5 p.m.
+                #Noon-3:30 a.m.
+                #9 a.m.-Midnight
+                #8 p.m.-Midnight
+                #Noon-Midnight
             """
         pass
 
