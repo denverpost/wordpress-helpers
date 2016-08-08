@@ -31,6 +31,10 @@ class Timezoner:
     def set_timedelta(self):
         """ Once self.timezone is set, run this to create the self.timedelta
             object.
+            >>> tz = Timezoner()
+            >>> tz.timezone = -3
+            >>> tz.set_timedelta()
+            True
             """
         self.timedelta = timedelta(hours=self.timezone)
         return True
@@ -39,6 +43,13 @@ class Timezoner:
         """ Replace all noons and midnights in the text with 12 p.m. and 12 a.m.,
             or vice versa.
             We know which way we want to replace if there are no instances of noon/midnight.
+            >>> tz = Timezoner()
+            >>> tz.replace_midnights("Hi it's Midnight again. No, it's Noon.")
+            "Hi it's 12 a.m. again. No, it's 12 p.m.."
+            >>> tz.replace_midnights("Hi it's again. No, it's.")
+            "Hi it's again. No, it's."
+            >>> tz.replace_midnights("Hi it's 12 a.m. again. No, it's 12 p.m..")
+            "Hi it's Midnight again. No, it's Noon."
             """
         if 'Noon' not in text and 'Midnight' not in text:
             text = text.replace('12 a.m.', 'Midnight')
