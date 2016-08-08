@@ -87,7 +87,7 @@ class Timezoner:
             #print d
             #d.converted = self.change_timezone(d)
 
-    def change_timezone(self, original):
+    def change_timezone(self, d):
         """ Take a dict of the original time (both the full string and the parts,
             and assuming self.timezone is set to the hour difference (+2, -3, etc.),
             it converts the times we've extracted.
@@ -97,7 +97,23 @@ class Timezoner:
                 {'from_minute': None, 'original': '7 p.m.-12 a.m.', 'to_ampm': 'a.m.', 'from_hour': '7', 'from_ampm': 'p.m.', 'to_hour': '12', 'to_minute': None}
             Returns the converted time string.
             """
-        pass
+        d['from_minutes'] = self.clean_minutes(d['from_minutes'])
+        d['to_minutes'] = self.clean_minutes(d['to_minutes'])
+        from_time = time(hours=d['from_hour'], minutes=d['from_minutes'])
+
+    def clean_minutes(self, m):
+        """ Minute strings come in as None and as ":30" or ":35", this standardizes that.
+            >>> tz = Timezoner()
+            >>> tz.clean_minutes(None)
+            0
+            >>> tz.clean_minutes(":30")
+            '30'
+            """
+        if m:
+            m = m.lstrip(':')
+        else:
+            m = 0
+        return m
 
     def rewrite_text(self, text):
         """ Updates the text with the new times. Returns the text.
