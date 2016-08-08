@@ -20,10 +20,10 @@ class Timezoner:
         self.patterns = [
                 # 3-7 p.m. & 12:30-1:30 a.m.
                 #'(([0-9]{1,2})([:0-9]{3})?-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
-                '(?P<full>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})?-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
+                '(?P<original>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})?-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
                 # 8 a.m.-6 p.m. & 10:30 a.m.-3 p.m. & 11 a.m.-1 a.m.
                 #'(([0-9]{1,2})([:0-9]{3})? ?([ap]+\.m\.)-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
-                '(?P<full>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})? ?(?P<from_ampm>[ap]+\.m\.)-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
+                '(?P<original>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})? ?(?P<from_ampm>[ap]+\.m\.)-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
                 ]
 
     def set_timedelta(self):
@@ -80,7 +80,7 @@ class Timezoner:
             regex = re.compile(pattern)
             r = regex.search(text)
             parts = regex.match(text)
-            print r.groupdict()
+            d = r.groupdict()
 
             # Add each result to self.times
             #d = {'original': item[0], 'parts': item[1:], 'converted': ''}
@@ -92,9 +92,9 @@ class Timezoner:
             and assuming self.timezone is set to the hour difference (+2, -3, etc.),
             it converts the times we've extracted.
             This is what a dict may look like:
-                {'parts': ('7', '', 'p.m.', '12', '', 'a.m.'), 'original': '7 p.m.-12 a.m.', 'converted': ''}
+                {'from_minute': ':35', 'original': '12:35-1:35 a.m.', 'to_ampm': 'a.m.', 'from_hour': '12', 'to_hour': '1', 'to_minute': ':35'}
             Or
-                {'parts': ('12', ':35', '1', ':35', 'a.m.'), 'original': '12:35-1:35 a.m.', 'converted': ''}
+                {'from_minute': None, 'original': '7 p.m.-12 a.m.', 'to_ampm': 'a.m.', 'from_hour': '7', 'from_ampm': 'p.m.', 'to_hour': '12', 'to_minute': None}
             Returns the converted time string.
             """
         pass
