@@ -7,6 +7,7 @@ import argparse
 import re
 import string
 import doctest
+from datetime import time, timedelta
 
 class Timezoner:
 
@@ -14,6 +15,8 @@ class Timezoner:
         """
             """
         self.times = []
+        self.timezone = 0
+        self.timedelta = timedelta()
         self.patterns = [
                 # 3-7 p.m. & 12:30-1:30 a.m.
                 '(([0-9]{1,2})([:0-9]{3})?-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
@@ -24,6 +27,13 @@ class Timezoner:
                 # 9 a.m.-Midnight
                 #'([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.)',
                 ]
+
+    def set_timedelta(self):
+        """ Once self.timezone is set, run this to create the self.timedelta
+            object.
+            """
+        self.timedelta = timedelta(hours=self.timezone)
+        return True
 
     def replace_midnights(self, text):
         """ Replace all noons and midnights in the text with 12 p.m. and 12 a.m.,
@@ -60,11 +70,23 @@ class Timezoner:
         for pattern in self.patterns:
             regex = re.compile(pattern)
             parts = regex.findall(text)
+
+            # Add each result to self.times
+            for item in parts:
+                d = {'original': item[0], 'parts': item[1:], 'converted': ''}
+                print d
+                #d.converted = self.change_timezone(d)
             print parts
 
-    def change_timezone(self, timezone):
-        """ Takes the hour-difference (+2, -3, etc.) and converts the times we've extracted.
-            Returns an updated dict.
+    def change_timezone(self, original):
+        """ Take a dict of the original time (both the full string and the parts,
+            and assuming self.timezone is set to the hour difference (+2, -3, etc.),
+            it converts the times we've extracted.
+            This is what a dict may look like:
+                {'parts': ('7', '', 'p.m.', '12', '', 'a.m.'), 'original': '7 p.m.-12 a.m.', 'converted': ''}
+            Or
+                {'parts': ('12', ':35', '1', ':35', 'a.m.'), 'original': '12:35-1:35 a.m.', 'converted': ''}
+            Returns the converted time string.
             """
         pass
 
@@ -78,6 +100,8 @@ def main(args):
         example of how you might run it if you include the script elsewhere.
         """
     tz = Timezoner()
+    tz.timezone = -2
+    tz.set_timedelta()
     tz.text = tz.replace_midnights(" Gold Medal Final, 7 p.m.-Midnight. Women's Gymnastics - Team Competition, 12:35-1:35 a.m.")
     tz.extract_parts()
         
