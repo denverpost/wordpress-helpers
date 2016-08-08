@@ -7,6 +7,42 @@ import re
 import string
 import doctest
 
+class Timezoner:
+
+    def __init__(self):
+        """
+            """
+        pass
+
+    def extract_parts(self, text):
+        """ Extract all the times and time ranges, returns a dict.
+            Dict will include original and replacement strings.
+            Regex will seek out times that match these patterns:
+                8 a.m.-6 p.m.
+                12:30-1:30 a.m.
+                Noon-5 p.m.
+                3-7 p.m.
+            """
+        pass
+
+    def change_timezone(self, timezone):
+        """ Takes the hour-difference (+2, -3, etc.) and converts the times we've extracted.
+            Returns an updated dict.
+            """
+        pass
+
+    def rewrite_text(self, text):
+        """ Updates the text with the new times. Returns the text.
+            """
+        pass
+
+def main(args):
+    """ This method fires when we run this from the command line, and it's an
+        example of how you might run it if you include the script elsewhere.
+        """
+        tz = Timezoner()
+
+
 def build_parser(args):
     """ This method allows us to test the args.
         >>> args = build_parser(['--verbose'])
