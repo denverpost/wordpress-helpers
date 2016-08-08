@@ -19,13 +19,11 @@ class Timezoner:
         self.timedelta = timedelta()
         self.patterns = [
                 # 3-7 p.m. & 12:30-1:30 a.m.
-                '(([0-9]{1,2})([:0-9]{3})?-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
+                #'(([0-9]{1,2})([:0-9]{3})?-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
+                '(?P<full>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})?-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
                 # 8 a.m.-6 p.m. & 10:30 a.m.-3 p.m. & 11 a.m.-1 a.m.
-                '(([0-9]{1,2})([:0-9]{3})? ?([ap]+\.m\.)-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
-                # Noon-5 p.m. & Noon-3:30 a.m.
-                #'Noon-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.)',
-                # 9 a.m.-Midnight
-                #'([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.)',
+                #'(([0-9]{1,2})([:0-9]{3})? ?([ap]+\.m\.)-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
+                '(?P<full>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})? ?(?P<from_ampm>[ap]+\.m\.)-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
                 ]
 
     def set_timedelta(self):
@@ -80,14 +78,14 @@ class Timezoner:
 
         for pattern in self.patterns:
             regex = re.compile(pattern)
-            parts = regex.findall(text)
+            r = regex.search(text)
+            parts = regex.match(text)
+            print r.groupdict()
 
             # Add each result to self.times
-            for item in parts:
-                d = {'original': item[0], 'parts': item[1:], 'converted': ''}
-                print d
-                #d.converted = self.change_timezone(d)
-            print parts
+            #d = {'original': item[0], 'parts': item[1:], 'converted': ''}
+            #print d
+            #d.converted = self.change_timezone(d)
 
     def change_timezone(self, original):
         """ Take a dict of the original time (both the full string and the parts,
