@@ -58,7 +58,8 @@ class Timezoner:
         return text
 
     def extract_parts(self, text=''):
-        """ Extract all the times and time ranges, returns a dict.
+        """ Extract all the times and time ranges, build the replacement strings,
+            and return the number of times matched / processed.
             Dict will include original and replacement strings.
             Regex will seek out times that match these patterns:
                 3-7 p.m.
@@ -76,16 +77,18 @@ class Timezoner:
         if text == '':
             text = self.text
 
+        # Add each result, as well as its converted time, to self.times
         for pattern in self.patterns:
             regex = re.compile(pattern)
             r = regex.search(text)
             parts = regex.match(text)
             d = r.groupdict()
 
-            # Add each result to self.times
-            #d = {'original': item[0], 'parts': item[1:], 'converted': ''}
-            #print d
-            #d.converted = self.change_timezone(d)
+            d = self.change_timezone(d)
+            d['converted'] = self.datetime_to_string(d['from_time'], d['to_time'])
+            self.times.append(d)
+
+        return len(self.times)
 
     def change_timezone(self, d):
         """ Take a dict of the original time (both the full string and the parts,
