@@ -95,7 +95,7 @@ class Timezoner:
                 {'from_minute': ':35', 'original': '12:35-1:35 a.m.', 'to_ampm': 'a.m.', 'from_hour': '12', 'to_hour': '1', 'to_minute': ':35'}
             Or
                 {'from_minute': None, 'original': '7 p.m.-12 a.m.', 'to_ampm': 'a.m.', 'from_hour': '7', 'from_ampm': 'p.m.', 'to_hour': '12', 'to_minute': None}
-            Returns the converted time string.
+            Returns the d dict with values added for from_time and to_time.
             """
         # Clean the input
         d['from_minute'] = self.clean_minute(d['from_minute'])
@@ -113,8 +113,10 @@ class Timezoner:
         # Timedelta only works on dates, but we only need times, but timedelta
         # only works on dates, so we just use today's date for the time calculation.
         t = datetime.today()
-        from_time = datetime(year=t.year, month=t.month, day=t.day, hour=d['from_hour'], minute=d['from_minute']) + self.timedelta
-        to_time = datetime(year=t.year, month=t.month, day=t.day, hour=d['to_hour'], minute=d['to_minute']) + self.timedelta
+        d['from_time'] = datetime(year=t.year, month=t.month, day=t.day, hour=d['from_hour'], minute=d['from_minute']) + self.timedelta
+        d['to_time'] = datetime(year=t.year, month=t.month, day=t.day, hour=d['to_hour'], minute=d['to_minute']) + self.timedelta
+
+        return d
 
 
     def datetime_to_string(self, from_time, to_time):
