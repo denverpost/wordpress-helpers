@@ -103,9 +103,61 @@ class Timezoner:
 
         if 'from_ampm' not in d:
             d['from_ampm'] = d['to_ampm']
+
+        # Adjust the hour for the pm times.
+        if d['from_ampm'] == 'p.m.':
+            d['from_hour'] = int(d['from_hour']) + 12
+        if d['to_ampm'] == 'p.m.':
+            d['to_hour'] = int(d['to_hour']) + 12
         
+        # Timedelta only works on dates, but we only need times, but timedelta
+        # only works on dates, so we just use today's date for the time calculation.
         t = datetime.today()
-        from_time = datetime(year=t.year, month=t.month, day=t.day, hour=d['from_hour'], minute=d['from_minute'])
+        from_time = datetime(year=t.year, month=t.month, day=t.day, hour=d['from_hour'], minute=d['from_minute']) + self.timedelta
+        to_time = datetime(year=t.year, month=t.month, day=t.day, hour=d['to_hour'], minute=d['to_minute']) + self.timedelta
+
+
+    def datetime_to_string(self, from_time, to_time):
+        """ Convert the datetime objects into strings we can output, ala
+            '12:35-1:35 a.m.' or '7 p.m.-12 a.m.'
+            We need both the from_time and the to_time because we omit the
+            "a.m./p.m." on time ranges that share a.m./p.m.'s.
+            >>> tz = Timezoner()
+            >>> t = datetime.today()
+            >>> fr = datetime(year=t.year, month=t.month, day=t.day, hour=12)
+            >>> to = fr + timedelta(hours=5)
+            >>> tz.datetime_to_string(fr, to)
+            '12 p.m.-5 p.m.'
+            """
+        # We have a custom ampm string. This is how we do the custom ampm.
+        if from_time.hour < 12 and to_time.hour < 12:
+            ampms = { 'from': '', 'to': ' a.m.' }
+        if from_time.hour >= 12 and to_time.hour >= 12:
+            ampms = { 'from': '', 'to': ' p.m.' }
+        if from_time.hour < 12 and to_time.hour >= 12:
+            ampms = { 'from': ' a.m.', 'to': ' p.m.' }
+        if from_time.hour >= 12 and to_time.hour < 12:
+            ampms = { 'from': ' p.m.', 'to': ' a.m.' }
+
+        # If we have a midnight or a noon in the from we use the full string.
+        # This is so replace_midnights() needs the full string to work.
+        # We only need this on the from time because the to time always has ampm.
+        if from_time.hour in [0, 12] and from_time.minute == 0:
+            ampms['from'] = ' p.m.'
+            if from_time.hour == 0:
+                ampms['from'] = ' a.m.'
+
+        if from_time.minute == 0:
+            from_time = '%s%s' % (from_time.strftime('%-I'), ampms['from'])
+        else:
+            from_time = '%s%s' % (from_time.strftime('%-I:%M'), ampms['from'])
+        if to_time.minute == 0:
+            to_time = '%s%s' % (to_time.strftime('%-I'), ampms['to'])
+        else:
+            to_time = '%s%s' % (to_time.strftime('%-I:%M'), ampms['to'])
+        dt = '%s-%s' % (from_time, to_time)
+        return dt
+        
 
     def clean_minute(self, m):
         """ Minute strings come in as None and as ":30" or ":35", this standardizes that.
