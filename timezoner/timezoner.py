@@ -73,6 +73,14 @@ class Timezoner:
                 #9 a.m.-Midnight
                 #8 p.m.-Midnight
                 #Noon-Midnight
+            >>> tz = Timezoner()
+            >>> tz.timezone = -3
+            >>> tz.set_timedelta()
+            True
+            >>> print tz.extract_parts("Golf Central Live From the Olympics, 5-6:30 a.m. & 3-5 p.m.; Women's Golf - 3rd Round (LIVE), 6:30 a.m.-3 p.m.")
+            2
+            >>> print tz.times[0]['converted']
+            '2-3:30 a.m.'
             """
         if text == '':
             text = self.text
@@ -108,7 +116,6 @@ class Timezoner:
             >>> print d['from_time'].hour, d['from_time'].minute
             9 35
             """
-        # Clean the input
         d['from_minute'] = self.clean_minute(d['from_minute'])
         d['to_minute'] = self.clean_minute(d['to_minute'])
 
