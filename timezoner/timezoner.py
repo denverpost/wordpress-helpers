@@ -7,7 +7,7 @@ import argparse
 import re
 import string
 import doctest
-from datetime import time, timedelta
+from datetime import datetime, time, timedelta
 
 class Timezoner:
 
@@ -97,16 +97,22 @@ class Timezoner:
                 {'from_minute': None, 'original': '7 p.m.-12 a.m.', 'to_ampm': 'a.m.', 'from_hour': '7', 'from_ampm': 'p.m.', 'to_hour': '12', 'to_minute': None}
             Returns the converted time string.
             """
-        d['from_minutes'] = self.clean_minutes(d['from_minutes'])
-        d['to_minutes'] = self.clean_minutes(d['to_minutes'])
-        from_time = time(hours=d['from_hour'], minutes=d['from_minutes'])
+        # Clean the input
+        d['from_minute'] = self.clean_minute(d['from_minute'])
+        d['to_minute'] = self.clean_minute(d['to_minute'])
 
-    def clean_minutes(self, m):
+        if 'from_ampm' not in d:
+            d['from_ampm'] = d['to_ampm']
+        
+        t = datetime.today()
+        from_time = datetime(year=t.year, month=t.month, day=t.day, hour=d['from_hour'], minute=d['from_minute'])
+
+    def clean_minute(self, m):
         """ Minute strings come in as None and as ":30" or ":35", this standardizes that.
             >>> tz = Timezoner()
-            >>> tz.clean_minutes(None)
+            >>> tz.clean_minute(None)
             0
-            >>> tz.clean_minutes(":30")
+            >>> tz.clean_minute(":30")
             '30'
             """
         if m:
