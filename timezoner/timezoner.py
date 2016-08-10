@@ -10,6 +10,15 @@ import doctest
 from datetime import datetime, time, timedelta
 
 class Timezoner:
+    """ Convert a times in any amount of text to a different timezone.
+        Times replaced are those that follow the Associated Press style for
+        time ranges. Note that because we want named dicts on the regex search,
+        and that named patterns aren't supported by re.findall, that only the
+        first time range on each line will be matched.
+
+        Because of this it's necessary to run the search and replace until
+        there are no matches left.
+        """
 
     def __init__(self):
         """
