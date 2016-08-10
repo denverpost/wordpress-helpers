@@ -222,8 +222,10 @@ def main(args):
     tz.timezone = -2
     tz.set_timedelta()
     tz.text = tz.replace_midnights(" Gold Medal Final, 7 p.m.-Midnight. Women's Gymnastics - Team Competition, 12:35-1:35 a.m.")
-    tz.extract_parts()
-    tz.rewrite_text(tz.text)
+    changes = 1
+    while changes > 0:
+        changes = tz.extract_parts()
+        tz.rewrite_text(tz.text)
         
 
 
