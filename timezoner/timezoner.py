@@ -134,8 +134,12 @@ class Timezoner:
         # Adjust the hour for the pm times.
         if d['from_ampm'] == 'p.m.':
             d['from_hour'] = int(d['from_hour']) + 12
+        elif d['from_ampm'] == 'a.m.' and int(d['from_hour']) == 12:
+            d['from_hour'] = 0
         if d['to_ampm'] == 'p.m.':
             d['to_hour'] = int(d['to_hour']) + 12
+        elif d['to_ampm'] == 'a.m.' and int(d['to_hour']) == 12:
+            d['to_hour'] = 0
         
         # Timedelta only works on dates, but we only need times, but timedelta
         # only works on dates, so we just use today's date for the time calculation.
@@ -205,7 +209,10 @@ class Timezoner:
     def rewrite_text(self, text):
         """ Updates the text with the new times. Returns the text.
             """
-        pass
+        for item in self.times:
+            text = text.replace(item['original'], item['converted'])
+
+        print text
 
 def main(args):
     """ This method fires when we run this from the command line, and it's an
@@ -216,6 +223,7 @@ def main(args):
     tz.set_timedelta()
     tz.text = tz.replace_midnights(" Gold Medal Final, 7 p.m.-Midnight. Women's Gymnastics - Team Competition, 12:35-1:35 a.m.")
     tz.extract_parts()
+    tz.rewrite_text(tz.text)
         
 
 
