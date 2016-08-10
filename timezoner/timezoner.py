@@ -99,11 +99,12 @@ class Timezoner:
             regex = re.compile(pattern)
             r = regex.search(text)
             parts = regex.match(text)
-            d = r.groupdict()
 
-            d = self.change_timezone(d)
-            d['converted'] = self.datetime_to_string(d['from_time'], d['to_time'])
-            self.times.append(d)
+            if r.pos:
+                d = r.groupdict()
+                d = self.change_timezone(d)
+                d['converted'] = self.datetime_to_string(d['from_time'], d['to_time'])
+                self.times.append(d)
 
         return len(self.times)
 
@@ -212,7 +213,8 @@ class Timezoner:
         for item in self.times:
             text = text.replace(item['original'], item['converted'])
 
-        print text
+        self.times = []
+        return text
 
 def main(args):
     """ This method fires when we run this from the command line, and it's an
@@ -225,7 +227,8 @@ def main(args):
     changes = 1
     while changes > 0:
         changes = tz.extract_parts()
-        tz.rewrite_text(tz.text)
+        tz.text = tz.rewrite_text(tz.text)
+        print tz.text
         
 
 
