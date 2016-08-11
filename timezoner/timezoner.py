@@ -26,14 +26,19 @@ class Timezoner:
         self.times = []
         self.timezone = 0
         self.timedelta = timedelta()
-        self.patterns = [
+        self.patterns = {
                 # 3-7 p.m. & 12:30-1:30 a.m.
                 #'(([0-9]{1,2})([:0-9]{3})?-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
-                '(?P<original>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})?-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
+                'one_ampm': '(?P<original>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})?-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
                 # 8 a.m.-6 p.m. & 10:30 a.m.-3 p.m. & 11 a.m.-1 a.m.
                 #'(([0-9]{1,2})([:0-9]{3})? ?([ap]+\.m\.)-([0-9]{1,2})([:0-9]{3})?\ ?([ap]+\.m\.))',
-                '(?P<original>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})? ?(?P<from_ampm>[ap]+\.m\.)-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
-                ]
+                'two_ampms': '(?P<original>(?P<from_hour>[0-9]{1,2})(?P<from_minute>[:0-9]{3})? ?(?P<from_ampm>[ap]+\.m\.)-(?P<to_hour>[0-9]{1,2})(?P<to_minute>[:0-9]{3})?\ ?(?P<to_ampm>[ap]+\.m\.))',
+                }
+        self.fields = {
+                #[('3-5 p.m.', '3', '', '5', '', 'p.m.')]
+                'one_ampm': ['original', 'from_hour', 'from_minute', 'to_hour', 'to_minute', 'to_ampm'],
+                'two_ampms': ['original', 'from_hour', 'from_minute', 'from_ampm', 'to_hour', 'to_minute', 'to_ampm']
+        }
 
     def set_timedelta(self):
         """ Once self.timezone is set, run this to create the self.timedelta
@@ -89,22 +94,19 @@ class Timezoner:
             >>> print tz.extract_parts("Golf Central Live From the Olympics, 5-6:30 a.m. & 3-5 p.m.; Women's Golf - 3rd Round (LIVE), 6:30 a.m.-3 p.m.")
             2
             >>> print tz.times[0]['converted']
-            '2-3:30 a.m.'
+            2-3:30 a.m.
             """
         if text == '':
             text = self.text
 
         # Add each result, as well as its converted time, to self.times
-        for pattern in self.patterns:
+        for key, pattern in self.patterns.iteritems():
             regex = re.compile(pattern)
-            r = regex.search(text)
-            parts = regex.match(text)
-
-            if r.pos:
-                d = r.groupdict()
-                d = self.change_timezone(d)
-                d['converted'] = self.datetime_to_string(d['from_time'], d['to_time'])
-                self.times.append(d)
+            r = regex.findall(text)
+            d = dict(zip(self.fields[key], r[0]))
+            d = self.change_timezone(d)
+            d['converted'] = self.datetime_to_string(d['from_time'], d['to_time'])
+            self.times.append(d)
 
         return len(self.times)
 
@@ -124,7 +126,7 @@ class Timezoner:
             >>> d = {'from_minute': ':35', 'original': '12:35-1:35 a.m.', 'to_ampm': 'a.m.', 'from_hour': '12', 'to_hour': '1', 'to_minute': ':35'}
             >>> d = tz.change_timezone(d)
             >>> print d['from_time'].hour, d['from_time'].minute
-            9 35
+            21 35
             """
         d['from_minute'] = self.clean_minute(d['from_minute'])
         d['to_minute'] = self.clean_minute(d['to_minute'])
@@ -223,13 +225,10 @@ def main(args):
     tz = Timezoner()
     tz.timezone = -2
     tz.set_timedelta()
-    tz.text = tz.replace_midnights(" Gold Medal Final, 7 p.m.-Midnight. Women's Gymnastics - Team Competition, 12:35-1:35 a.m.")
-    changes = 1
-    while changes > 0:
-        changes = tz.extract_parts()
-        tz.text = tz.rewrite_text(tz.text)
-        print tz.text
-        
+    tz.text = tz.replace_midnights(" Golf Central Live From the Olympics,  3-5 p.m.; Women's Golf - 3rd Round (LIVE), 6:30 a.m.-3 p.m.")
+    changes = tz.extract_parts()
+    #changes, tz.text
+    tz.text = tz.rewrite_text(tz.text)
 
 
 def build_parser(args):
