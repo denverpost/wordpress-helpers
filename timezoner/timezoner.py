@@ -222,8 +222,7 @@ def main(args):
     tz.set_timedelta()
     tz.text = tz.replace_midnights(" Golf Central Live From the Olympics,  3-5 p.m.; Women's Golf - 3rd Round (LIVE), 6:30 a.m.-3 p.m.")
     changes = tz.extract_parts()
-    tz.text = tz.rewrite_text(tz.text)
-    print tz.text
+    text = tz.rewrite_text(tz.text)
 
 
 def build_parser(args):
