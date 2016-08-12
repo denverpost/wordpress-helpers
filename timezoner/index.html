@@ -9,6 +9,7 @@
         <meta http-equiv="Content-Type" content="text/html;" />
         <link rel='stylesheet' id='knowlton-styles-css'  href='https://assets.digitalfirstmedia.com/prod/static/css/denverpost.css?ver=1.0' type='text/css' media='all' />
         <link rel='stylesheet' id='mason-fonts-css'  href='https://fonts.googleapis.com/css?family=Open%20Sans|Source+Serif+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C700italic%7CSource+Sans+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C400italic&#038;ver=4.5.3' type='text/css' media='all' />
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
         <style type="text/css">
             input, textarea { clear: both; }
         </style>
@@ -16,3 +17,37 @@
     <body class="body-copy">
         <h1>Timezone Conversion</h1>
         <p>Rewrite an AP schedule so that all the times are two hours earlier.</p>
+
+        <form>
+        <textarea id="content" cols="100" rows="40" style="clear: both; width:50%; height:80%;"></textarea>
+        </form>
+        <div id="results"></div>
+<script>
+$('textarea#content').on('keyup', function(e)
+{
+    console.log($(this).val());
+    //var post_data = $(this).serializeArray();
+    $.ajax(
+    {
+        url: 'handler.cgi',
+        type: 'POST',
+        data: {'content': $(this).val()},
+        success:function(data, text_status, jqXHR) 
+        {
+            // The data returned from the server will be two values, separated
+            // by a comma: the grade average, and the number of votes. 
+            var values = data.split(',');
+            $('#results').text(data);
+            console.log(data, text_status, jqXHR);
+        },
+        error: function(jqXHR, text_status, error_thrown) 
+        {
+            console.log(data, text_status, error_thrown);
+        }
+    });
+    e.preventDefault(); // STOP default action
+    //e.unbind(); // unbind. to stop multiple form submit.
+});
+</script>
+    </body>
+</html>
