@@ -33,7 +33,7 @@ p
         <p>Emails a ticket to DFM from you requesting a redirect.</p>
 <?php
 if ( isset($_POST['email']) ):
-    $to = 'jmurphy@denverpost.com';
+    $to = 'websupport@medianewsgroup.com';
     $from = trim(htmlspecialchars($_POST['email']));
     $url_from = trim(htmlspecialchars($_POST['url_from']));
     $url_to = trim(htmlspecialchars($_POST['url_to']));
@@ -41,6 +41,7 @@ if ( isset($_POST['email']) ):
     $message = 'Hi, could you please redirect ' . $url_from . ' to ' . $url_to . ' . Thanks!';
     $headers = 'From: ' . $from . "\r\n" .
     'Reply-To: ' . $from . "\r\n" .
+    'Bcc: jmurphy@denverpost.com ' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
     mail($to, $subject, $message, $headers);
 ?>
