@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>List Maker</title>
+        <title>Redirect Helper</title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width" />
         <meta charset="utf-8" />
@@ -10,44 +10,58 @@
         <link rel='stylesheet' id='knowlton-styles-css'  href='https://assets.digitalfirstmedia.com/prod/static/css/denverpost.css?ver=1.0' type='text/css' media='all' />
         <link rel='stylesheet' id='mason-fonts-css'  href='https://fonts.googleapis.com/css?family=Open%20Sans|Source+Serif+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C700italic%7CSource+Sans+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C400italic&#038;ver=4.5.3' type='text/css' media='all' />
         <style type="text/css">
-            input, textarea { clear: both; }
+input, textarea { clear: both; }
+body { margin: .5em 1em; }
+input[type=url],
+input[type=email]
+{
+    border: 1px solid #999;
+    border-radius: 0;
+    color: #1a1a1a;
+    height: 30px;
+    padding: .5em .625em;
+    transition: border-color .25s linear;
+}
+p
+{
+    margin-bottom: 1em;
+}
         </style>
     </head>
     <body class="body-copy">
-        <h1>List Markup Maker</h1>
-        <p>Add &lt;li>'s to each line. Helps most when producing recipes.</p>
+        <h1>Redirect Helper</h1>
+        <p>Emails a ticket to DFM from you requesting a redirect.</p>
 <?php
-if ( isset($_POST['content']) ):
+if ( isset($_POST['email']) ):
+    $to = 'jmurphy@denverpost.com';
+    $from = trim(htmlspecialchars($_POST['email']));
+    $url_from = trim(htmlspecialchars($_POST['url_from']));
+    $url_to = trim(htmlspecialchars($_POST['url_to']));
+    $subject = 'Redirect request for ' . $url_from;
+    $message = 'Hi, could you please redirect ' . $url_from . ' to ' . $url_to . ' . Thanks!';
+    $headers = 'From: ' . $from . "\r\n" .
+    'Reply-To: ' . $from . "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+    mail($to, $subject, $message, $headers);
 ?>
-            <p>Paste your list here.</p>
-            <textarea name="content" id="content" cols="100" rows="30">
-<ul>
+        <p><strong>Thanks!</strong> The following email was sent to websupport@medianewsgroup.com:</p>
+        <p><?php echo $message; ?></p>
 <?php
-    // Strip the custom markup on the paragraphs
-    $content = str_replace("\n\n", "\n", '<li>' . $_POST['content']);
-    $content = str_replace("\n\r", "\n", $content);
-    $content = str_replace("\r\n", "\n", $content);
-
-    // Add li's
-    $content = str_replace("\n", "</li>\n<li>", $content);
-    $content = str_replace("<li></li>\n", '', $content);
-    $content = str_replace("<li></li>\r", '', $content);
-    $content = str_replace("<li></li>", '', $content);
-    $content = htmlspecialchars($content); 
-    
-    echo $content;
-?></li>
-</ul>
-</textarea>
-<?php
-
 else:
 ?>
         <form method="POST">
-            <input type="submit" value="Submit">
-            <hr noshade>
-            <textarea name="content" id="content" cols="100" rows="40" style="clear: both; width:100%; height:80%;"></textarea>
-            <input type="submit" value="Submit">
+            <p>
+                <label for="email">
+                    Hi, my email address is <input type="email" name="email">
+                </label>
+                <label for="url_from">
+                    and I want to redirect from <input type="url" name="url_from" placeholder="http://...">
+                </label>
+                <label for="url_to">
+                    to <input type="url" name="url_to" placeholder="http://..."> and when I click that red button this script will request this redirect from DFM.
+                </label>
+            </p>
+            <input type="submit" value="Request the redirect">
         </form>
 <?php
 endif;
