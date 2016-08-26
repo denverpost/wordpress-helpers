@@ -16,6 +16,10 @@ def parse_template(data, template):
     template = template.replace('{{URL}}', data['link'])
     template = template.replace('{{TITLE}}', data['title'])
     template = template.replace('{{BLURB}}', data['summary'])
+    if hasattr(data, 'tags') and len(data['tags']) > 0:
+        template = template.replace('{{SECTION}}', data['tags'][0]['term'])
+    else:
+        template = template.replace('<h2><a href="{{URL}}" target="_top">{{SECTION}}</a></h2>', '')
     if hasattr(data, 'media_content') and len(data['media_content']) > 0:
         template = template.replace('{{IMG}}', '%s?w=150' % data['media_content'][0]['url'])
     else:
@@ -30,7 +34,7 @@ def main(args):
         f = feedparser.parse(url)
         random.shuffle(f['entries'])
         i = 1
-        while i < args.limit:
+        while i <= args.limit:
             if len(f['entries']) <= i:
                 break
             fh = open('output/%s-%d.html' % (args.slug, i), 'wb')
