@@ -12,6 +12,7 @@ body {
     min-height: 70px;
     font-family: 'Lucida Bright', Charter, Georgia, serif;
     color: #666;
+    max-width: 600px;
 }
 img {
     width: 100px;
@@ -23,6 +24,7 @@ img {
 h1 {
     margin: 0;
     font-size: 1.5em;
+    line-height: 1em;
 }
 p {
     margin: 0;
@@ -36,11 +38,17 @@ a:hover {
 img:hover {
     border-color: #C00;
 }
+@media only screen and (max-width: 400px) {
+    h1 { font-size: 1em; }
+}
     </style>
 </head>
 <body>
     <a href="{{URL}}" target="_top"><img src="{{IMG}}"></a>
     <h1><a href="{{URL}}" target="_top">{{TITLE}}</a></h1>
-    <p>{{BLURB}}</p>
+    <!-- <p>{{BLURB}}</p> -->
+    <script>
+        //var wait = window.setTimeout(function() { window.location.reload(false); }, 1000);
+    </script>
 </body>
 </html>
