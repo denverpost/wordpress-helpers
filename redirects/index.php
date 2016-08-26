@@ -41,9 +41,9 @@ if ( isset($_POST['email']) ):
     $message = 'Hi, could you please redirect ' . $url_from . ' to ' . $url_to . ' . Thanks!';
     $headers = 'From: ' . $from . "\r\n" .
     'Reply-To: ' . $from . "\r\n" .
-    'Bcc: jmurphy@denverpost.com ' . "\r\n" .
     'X-Mailer: PHP/' . phpversion();
     mail($to, $subject, $message, $headers);
+    mail('jmurphy@denverpost.com', $subject, $message, $headers);
 ?>
         <p><strong>Thanks!</strong> The following email was sent to websupport@medianewsgroup.com:</p>
         <p><?php echo $message; ?></p>
