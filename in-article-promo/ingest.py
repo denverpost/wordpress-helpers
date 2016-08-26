@@ -16,10 +16,10 @@ def parse_template(data, template):
     template = template.replace('{{URL}}', data['link'])
     template = template.replace('{{TITLE}}', data['title'])
     template = template.replace('{{BLURB}}', data['summary'])
-    if hasattr(data, 'media_content') and len(data['media_content']) > 1:
-        template = template.replace('{{IMG}}', data['media_content'][0]['url'])
+    if hasattr(data, 'media_content') and len(data['media_content']) > 0:
+        template = template.replace('{{IMG}}', '%s?w=150' % data['media_content'][0]['url'])
     else:
-        template = template.replace('{{IMG}}', '')
+        template = template.replace('<img src="{{IMG}}">', '')
 
     return template
 
@@ -50,7 +50,7 @@ def build_parser(args):
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true",
                         help="Run doctests, display more info.")
-    parser.add_argument("-s", "--slug", dest="slug",
+    parser.add_argument("-s", "--slug", dest="slug", default="dont-miss",
                         help="What to name the output files")
     parser.add_argument("-l", "--limit", dest="limit", default=5,
                         help="How many files to write")
