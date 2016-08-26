@@ -1,13 +1,43 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Turn a RSS feed into a json object.
+# Take a few entries from the json object and turn them into promos.
 import argparse
 import doctest
 import sys
 import json
 import feedparser
+import random
+import string
+
+def parse_template(data, template):
+    """ Given the data and a template, return a string.
+        """
+    template = template.replace('{{URL}}', data['link'])
+    template = template.replace('{{TITLE}}', data['title'])
+    template = template.replace('{{BLURB}}', data['summary'])
+    if hasattr(data, 'media_content') and len(data['media_content']) > 1:
+        template = template.replace('{{IMG}}', data['media_content'][0]['url'])
+    else:
+        template = template.replace('{{IMG}}', '')
+
+    return template
 
 def main(args):
-    pass
+    fh = open('html/single.html', 'rb')
+    template = fh.read()
+    for url in args.urls[0]:
+        f = feedparser.parse(url)
+        random.shuffle(f['entries'])
+        i = 1
+        while i < args.limit:
+            if len(f['entries']) <= i:
+                break
+            fh = open('output/%s-%d.html' % (args.slug, i), 'wb')
+            fh.write(parse_template(f['entries'][i-1], template).encode('utf-8', 'replace'))
+            i += 1
+            
+            
 
 def build_parser(args):
     """ This method allows us to test the args.
@@ -20,7 +50,11 @@ def build_parser(args):
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true",
                         help="Run doctests, display more info.")
-    parser.add_argument("filename", action="append", nargs="*")
+    parser.add_argument("-s", "--slug", dest="slug",
+                        help="What to name the output files")
+    parser.add_argument("-l", "--limit", dest="limit", default=5,
+                        help="How many files to write")
+    parser.add_argument("urls", action="append", nargs="*")
     args = parser.parse_args(args)
     return args
 
