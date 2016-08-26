@@ -1,0 +1,20 @@
+{
+    "name": "DPO",
+    "version": "0.0.1",
+    "manifest_version": 1,
+    "description": "Help produce WordPress articles.",
+    "options_page": "options.html",
+    "browser_action": {
+        "default_icon": "icon.gif",
+        "default_popup": "menu.html",
+        "default_title": "DPO" 
+    },
+    "icons": {
+        "16": "icon_16.gif",
+        "48": "icon.gif"
+    },
+    "background": {
+        "page": "background.html"
+    },
+    "permissions": [ "storage", "tabs", "contextMenus", "http://*/*", "http://*/", "https://*/" ]
+}
