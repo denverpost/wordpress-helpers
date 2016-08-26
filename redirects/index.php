@@ -30,7 +30,7 @@ p
     </head>
     <body class="body-copy">
         <h1>Redirect Helper</h1>
-        <p>Emails a ticket to DFM from you requesting a redirect.</p>
+        <p><strong>Emails a ticket to DFM from you requesting a redirect</strong>.</p>
 <?php
 if ( isset($_POST['email']) ):
     $to = 'websupport@medianewsgroup.com';
@@ -55,13 +55,14 @@ else:
         <form method="POST">
             <p>
                 <label for="email">
-                    Hi, my email address is <input type="email" name="email">
+                    Hi, my email address is <input type="email" name="email" required>
                 </label>
                 <label for="url_from">
-                    and I want to redirect from <input type="url" name="url_from" placeholder="http://...">
+                    and I want to redirect from <input type="url" name="url_from" placeholder="http://..." required>
                 </label>
                 <label for="url_to">
-                    to <input type="url" name="url_to" placeholder="http://..."> and when I click that red button this script will request this redirect from DFM.
+                    to <input type="url" name="url_to" placeholder="http://..." required>
+                    and when I click the red button this script will request this redirect from DFM.
                 </label>
             </p>
             <input type="submit" value="Request the redirect">
