@@ -47,6 +47,8 @@ if ( isset($_POST['email']) ):
 ?>
         <p><strong>Thanks!</strong> The following email was sent to websupport@medianewsgroup.com:</p>
         <p><?php echo $message; ?></p>
+        <hr noshade>
+        <p><a href="./">Create another redirect</a>.</p>
 <?php
 else:
 ?>
