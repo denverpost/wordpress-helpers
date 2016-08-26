@@ -4,6 +4,10 @@ import argparse
 import doctest
 import sys
 import json
+import feedparser
+
+def main(args):
+    pass
 
 def build_parser(args):
     """ This method allows us to test the args.
