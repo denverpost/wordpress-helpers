@@ -16,5 +16,5 @@
     "background": {
         "page": "background.html"
     },
-    "permissions": [ "storage", "tabs", "contextMenus", "http://*/*", "http://*/", "https://*/" ]
+    "permissions": [ "storage", "tabs", "contextMenus", "https://www.denverpost.com/" ]
 }
