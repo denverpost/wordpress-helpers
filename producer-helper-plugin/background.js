@@ -19,17 +19,18 @@ return function(info, tab){
 
   };
 };
+
+function insertSidebar(sidebar) {
+    return function(info, tab) {
+        console.log(info)
+        console.log(tab)
+    };
+};
 /**
- * Create a context menu which will only show up for URLs and images.
+ * Create a context menu for all that we desire
  */
 chrome.contextMenus.create({
-  "title" : "Save this URL",
+  "title" : "Insert weather sidebar",
   "type" : "normal",
-  "onclick" : getClickHandler("text")
-});
-chrome.contextMenus.create({
-  "title" : "Save this Image",
-  "type" : "normal",
-  "contexts" : ["image"],
-  "onclick" : getClickHandler("picture")
+  "onclick" : insertSidebar("weather")
 });
