@@ -13,9 +13,11 @@ import string
 def parse_template(data, template):
     """ Given the data and a template, return a string.
         """
+    img_html = """<div class="thumb-wrap"><div class="thumb-holder"></div><a href="{{URL}}" target="_top"><div class="thumb-img" style="background-image:url('{{IMG}}');"></div></a></div>"""
     template = template.replace('{{URL}}', data['link'])
     template = template.replace('{{TITLE}}', data['title'])
     template = template.replace('{{BLURB}}', data['summary'])
+    img_html = img_html.replace('{{URL}}', data['link'])
     if hasattr(data, 'tags') and len(data['tags']) > 0:
         template = template.replace('{{SECTION}}', data['tags'][0]['term'])
     else:
@@ -23,7 +25,7 @@ def parse_template(data, template):
     if hasattr(data, 'media_content') and len(data['media_content']) > 0:
         template = template.replace('{{IMG}}', '%s?w=150' % data['media_content'][0]['url'])
     else:
-        template = template.replace('<img src="{{IMG}}">', '')
+        template = template.replace(img_html, '')
 
     return template
 
