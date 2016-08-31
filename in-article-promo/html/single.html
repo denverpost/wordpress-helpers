@@ -3,32 +3,42 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel='dns-prefetch' href='//fonts.googleapis.com'>
     <title></title>
+    <link rel='stylesheet' id='mason-fonts-css' href='https://fonts.googleapis.com/css?family=Source+Serif+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C700italic%7CSource+Sans+Pro%3A400%2C400italic%2C600%2C600italic%2C700%2C400italic&#038;ver=4.6' type='text/css' media='all' />
     <style type="text/css">
 body {
-    margin: .5em;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    min-height: 70px;
-    font-family: 'Lucida Bright', Charter, Georgia, serif;
-    color: #666;
-    max-width: 600px;
+    width: 100%;
+    margin:0;
+    padding:0;
 }
-img {
-    width: 100px;
-    height: 60px;
-    float: left;
-    border: 1px solid #aaa;
-    margin: .2em;
+div.main {
+    margin: 0;
+    padding:.25em 0;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    background-color:#f5f5f5;
+    min-height: 70px;
+    color: #666;
+    width: 100%;
+    display:block;
+}
+div.main:hover {
+    border-top: 1px solid #DFC5B2;
+    border-bottom: 1px solid #DFC5B2;
+    background-color:#FFF3F1;
 }
 h1 {
     margin: 0;
-    font-size: 1.5em;
-    line-height: 1em;
+    font-size: 1.3em;
+    line-height: 1.1;
+    font-family: 'Source Serif Pro', Georgia, Times, serif;
 }
 h2 {
-    margin: 0;
+    margin: 0 0 .3em;
     font-size: 1em;
+    line-height: 1;
+    font-family: 'Source Sans Pro', Tahoma, 'Trebuchet MS', Arial, sans-serif;
     text-transform: uppercase;
 }
 p {
@@ -37,14 +47,42 @@ p {
 a {
     text-decoration: none;
 }
+h1 a {
+    color: #1a1a1a;
+}
 h2 a {
-    color: #C00;
+    color: #8e1024;
 }
-a:hover {
-    color: #C00;
+body:hover .thumb-wrap a {
+    border-color: #8e1024;
 }
-img:hover {
-    border-color: #C00;
+.thumb-wrap {
+    position:relative;
+    width:20%;
+    display:inline-block;
+    float:left;
+    margin: 0 .5em .25em 0;
+}
+.thumb-holder {
+    width:100%;
+    padding-bottom: 70%;
+}
+.thumb-wrap a {
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    padding: 0;
+    display: block;
+    border: 1px solid #aaa;
+}
+.thumb-img {
+    width:100%;
+    height:100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 @media only screen and (max-width: 400px) {
     h1 { font-size: 1em; }
@@ -53,12 +91,15 @@ img:hover {
     </style>
 </head>
 <body>
-    <a href="{{URL}}" target="_top"><img src="{{IMG}}"></a>
-    <h2><a href="{{URL}}" target="_top">{{SECTION}}</a></h2>
-    <h1><a href="{{URL}}" target="_top">{{TITLE}}</a></h1>
-    <!-- <p>{{BLURB}}</p> -->
-    <script>
-        //var wait = window.setTimeout(function() { window.location.reload(false); }, 1000);
-    </script>
+    <div class="main">
+        <div class="thumb-wrap"><div class="thumb-holder"></div><a href="{{URL}}" target="_top"><div class="thumb-img" style="background-image:url('{{IMG}}');"></div></a></div>
+        <h2><a href="{{URL}}" target="_top">{{SECTION}}</a></h2>
+        <h1><a href="{{URL}}" target="_top">{{TITLE}}</a></h1>
+        <!-- <p>{{BLURB}}</p> -->
+        <div style="width:100%; display:block; height:0; clear:both;"></div>
+        <script>
+            //var wait = window.setTimeout(function() { window.location.reload(false); }, 1000);
+        </script>
+    </div>
 </body>
 </html>
