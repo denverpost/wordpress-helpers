@@ -56,7 +56,7 @@ def build_parser(args):
                                      epilog='')
     parser.add_argument("-v", "--verbose", dest="verbose", default=False, action="store_true",
                         help="Run doctests, display more info.")
-    parser.add_argument("-s", "--slug", dest="slug", default="dont-miss",
+    parser.add_argument("-s", "--slug", dest="slug", default="default",
                         help="What to name the output files")
     parser.add_argument("-l", "--limit", dest="limit", default=5,
                         help="How many files to write")

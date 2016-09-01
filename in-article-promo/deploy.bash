@@ -1,5 +1,5 @@
 #!/bin/bash
-python ingest.py http://www.denverpost.com/dont-miss/feed/
+python ingest.py http://www.denverpost.com/dont-miss/feed/ --slug dont-miss
 ../ftp.bash --dir $REMOTE_DIR --host $REMOTE_HOST
 curl -X PURGE http://extras.denverpost.com/app/in-article-promo/dont-miss-1.html
 curl -X PURGE http://extras.denverpost.com/app/in-article-promo/dont-miss-2.html
