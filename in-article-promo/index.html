@@ -46,7 +46,7 @@ var Article = React.createClass({
     return (
       <div className="article">
         <h2 className="articleAuthor">
-          {this.props.author}
+          {this.props.url}
         </h2>
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
       </div>
@@ -113,7 +113,7 @@ var ArticleList = React.createClass({
     var articleNodes = this.props.data.map(function(article) {
       return (
         <Article author={article.author} key={article.id}>
-          {article.text}
+          {article.url}
         </Article>
       );
     });
@@ -137,13 +137,12 @@ var ArticleForm = React.createClass({
   },
   handleSubmit: function(e) {
     e.preventDefault();
-    var author = this.state.author.trim();
-    var text = this.state.text.trim();
-    if (!text || !author) {
+    var url = this.state.url.trim();
+    if (!url) {
       return;
     }
-    this.props.onArticleSubmit({author: author, text: text});
-    this.setState({author: '', text: ''});
+    this.props.onArticleSubmit({url: url});
+    this.setState({url: ''});
   },
   render: function() {
     return (
@@ -162,7 +161,7 @@ var ArticleForm = React.createClass({
 });
 
 ReactDOM.render(
-  <ArticleBox url="api/articles" pollInterval={2000} />,
+  <ArticleBox url="api.php" pollInterval={2000} />,
   document.getElementById('content')
 );
 </script>
