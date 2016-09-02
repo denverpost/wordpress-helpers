@@ -6,8 +6,19 @@ class Api {
     public $items = '';
     public $filename = '';
 
-    public function get() { }
-    public function post() { }
+    public function __construct($filename)
+    {
+        $this->filename = $filename;
+        $this->json = file_get_contents($filename . '.json');
+        $this->items = json_decode($this->json);
+    }
+
+    public function get() { 
+        return $this->json;
+    }
+
+    public function post() {
+    }
 
 }
 
@@ -15,12 +26,20 @@ class Article {
     // Handle getting and storing detailed article information
     public $url;
 
+    public function __construct($url)
+    {
+        $this->url = $url;
+    }
+
     public function retrieve() {
     }
 
 }
 
-$live_articles = file_get_contents('articles.json');
+
+$articles_live = new Api('articles_live');
+$articles_db = new Api('articles_db');
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $articlesDecoded = json_decode($articles, true);
     $articlesDecoded[] = [
