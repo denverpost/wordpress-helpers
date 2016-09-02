@@ -1,17 +1,26 @@
 <?php
-/**
- * This file provided by Facebook is for non-commercial testing and evaluation
- * purposes only. Facebook reserves all rights not expressly granted.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
- * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+// We store two main lists: One of the active URLs we're promoting,
+// the other of all the article URLs and their corresponding headline and section and image URL.
+class Api {
+    // Handle file writing and reading
+    public $items = '';
+    public $filename = '';
 
-$articles = file_get_contents('articles.json');
+    public function get() { }
+    public function post() { }
+
+}
+
+class Article {
+    // Handle getting and storing detailed article information
+    public $url;
+
+    public function retrieve() {
+    }
+
+}
+
+$live_articles = file_get_contents('articles.json');
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $articlesDecoded = json_decode($articles, true);
     $articlesDecoded[] = [
