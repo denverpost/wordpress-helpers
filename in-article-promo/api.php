@@ -15,7 +15,7 @@ class Api {
 
     public function find($value, $field='url') { 
         foreach ( $this->items as $key => $val ):
-           if ( $this->items[$key][$field] == $value ):
+           if ( $this->items[$key]->$field == $value ):
                 return $this->items[$key];
             endif;
         endforeach;
@@ -69,28 +69,41 @@ class Article {
 $articles_live = new Api('articles_live');
 $articles_detail = new Api('articles_detail');
 
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     $url = htmlspecialchars($_POST['url']);
+    $action = htmlspecialchars($_POST['action']);
     $articles_working = $articles_live->items;
+
 
     // See if we already have metadata for this URL in our details json file.
     $detail = $articles_detail->find($url);
     if ( $detail === False ):
-        $article = Article($url);
+        $article = new Article($url);
         $detail = $article->retrieve();
+        $articles_detail->items[] = $detail;
+        $articles_detail->save();
     endif;
-    $articles_working[] = $detail;
+
+    var_dump($articles_working);
+    if ( $action == 'delete' ):
+        foreach ( $articles_working as $key => $value ):
+            if ( $url == $value->url ):
+                unset($articles_working[$key]);
+            endif;
+        endforeach;
+    else:
+        $detail['id'] = round(microtime(true) * 1000);
+        $articles_working[] = $detail;
+    endif;
+    echo '==========' . "\n";
+    var_dump($articles_working);
 
 
     $articles_live->items = $articles_working;
     $articles_live->json = json_encode($articles_working, JSON_PRETTY_PRINT);
     $articles_live->save();
-}
+endif;
 header('Content-Type: application/json');
 header('Cache-Control: no-cache');
 header('Access-Control-Allow-Origin: *');
 echo $articles_live->json;
-
-function get_content($url)
-{
-}

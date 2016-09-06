@@ -26,6 +26,11 @@ p
 {
     margin-bottom: 1em;
 }
+a.x
+{
+    color:red!important; 
+    float: left;
+}
         </style>
     <script src="https://npmcdn.com/react@15.3.1/dist/react.js"></script>
     <script src="https://npmcdn.com/react-dom@15.3.1/dist/react-dom.js"></script>
@@ -42,12 +47,31 @@ var Article = React.createClass({
     return { __html: rawMarkup };
   },
 
+  handleArticleDelete: function() {
+    var article = {};
+    article.url = this.props.children;
+    article.action = 'delete';
+    console.log($(article).serializeArray());
+    $.ajax({
+      url: 'api.php',
+      dataType: 'json',
+      type: 'POST',
+      data: article,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        this.setState({});
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   render: function() {
     return (
       <div className="article">
-        <h2 className="articleAuthor">
-          {this.props.url}
-        </h2>
+        <h3 className="articleAuthor">
+          <a href="#" className="x" id={this.props.url} onClick={this.handleArticleDelete}>x</a> {this.props.url}
+        </h3>
         <span dangerouslySetInnerHTML={this.rawMarkup()} />
       </div>
     );
@@ -100,7 +124,7 @@ var ArticleBox = React.createClass({
   render: function() {
     return (
       <div className="articleBox">
-        <h1>Articles</h1>
+        <h2>Articles</h2>
         <ArticleList data={this.state.data} />
         <ArticleForm onArticleSubmit={this.handleArticleSubmit} />
       </div>
@@ -154,7 +178,7 @@ var ArticleForm = React.createClass({
           onChange={this.handleURLChange}
           required
         />
-        <input type="submit" value="Post" />
+        <input type="submit" value="Add Article" />
       </form>
     );
   }
@@ -168,7 +192,5 @@ ReactDOM.render(
         <h1>In-Article Promo Article List Editor</h1>
         <p><strong>Add the articles you'd like to see in the in-article promos</strong>.</p>
         <div id="content"></div>
-
-
     </body>
 </html>
