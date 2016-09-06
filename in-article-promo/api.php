@@ -20,6 +20,12 @@ class Api {
     public function post() {
     }
 
+    public function save() {
+        $this->json = json_encode($this->items);
+        file_put_contents($this->filename . '.json', $this->json);
+        return True;
+    }
+
 }
 
 class Article {
@@ -38,19 +44,20 @@ class Article {
 
 
 $articles_live = new Api('articles_live');
-$articles_db = new Api('articles_db');
+$articles_details = new Api('articles_detail');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $articlesDecoded = json_decode($articles, true);
-    $articlesDecoded[] = [
+    $articles_working = $articles_live->items;
+    $articles_working[] = [
         'id'      => round(microtime(true) * 1000),
-        'url'  => $_POST['url']
+        'url'  => htmlspecialchars($_POST['url'])
     ];
 
-    $articles = json_encode($articlesDecoded, JSON_PRETTY_PRINT);
-    file_put_contents('articles.json', $articles);
+    $articles_live->items = $articles_working;
+    $articles_live->json = json_encode($articles_working, JSON_PRETTY_PRINT);
+    $articles_live->save();
 }
 header('Content-Type: application/json');
 header('Cache-Control: no-cache');
 header('Access-Control-Allow-Origin: *');
-echo $articles;
+echo $articles_live->json;
