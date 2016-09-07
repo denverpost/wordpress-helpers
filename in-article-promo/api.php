@@ -9,7 +9,7 @@ class Api {
     public function __construct($filename)
     {
         $this->filename = $filename;
-        $this->json = file_get_contents($filename . '.json');
+        $this->json = file_get_contents('json/' . $filename . '.json');
         $this->items = json_decode($this->json);
     }
 
@@ -27,14 +27,14 @@ class Api {
 
     public function save() {
         $this->json = json_encode($this->items);
-        file_put_contents($this->filename . '.json', $this->json);
+        file_put_contents('json/' . $this->filename . '.json', $this->json);
         return True;
     }
 
 }
 
-class Article {
-    // Handle retrieving detailed article information
+class Url {
+    // Handle retrieving detailed url information
     public $url;
     public $article;
 
@@ -73,24 +73,28 @@ class Article {
 }
 
 
-$articles_live = new Api('articles_live');
-$articles_detail = new Api('articles_detail');
+$urls_live = [ 
+                'dont-miss' => new Api('urls_live-dont-miss'),
+                'hard-news' => new Api('urls_live-hard-news'),
+                'sports' => new Api('urls_live-sports')
+            ];
+$urls_detail = new Api('urls_detail');
 
 if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     $url = htmlspecialchars($_POST['url']);
     $action = htmlspecialchars($_POST['action']);
-    $articles_working = $articles_live->items;
+    $articles_working = $urls_live['dont-miss']->items;
 
 
     // See if we already have metadata for this URL in our details json file.
-    $detail = $articles_detail->find($url);
+    $detail = $urls_detail->find($url);
     if ( $detail === False ):
-        $article = new Article($url);
+        $article = new Url($url);
         $detail = $article->retrieve();
         $detail['url'] = $url;
         $detail['id'] = round(microtime(true) * 1000);
-        $articles_detail->items[] = $detail;
-        $articles_detail->save();
+        $urls_detail->items[] = $detail;
+        $urls_detail->save();
     endif;
 
     if ( $action == 'delete' ):
@@ -106,12 +110,12 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     endif;
 
 
-    $articles_live->items = $articles_working;
-    $articles_live->json = json_encode($articles_working, JSON_PRETTY_PRINT);
-    $articles_live->save();
+    $urls_live['dont-miss']->items = $articles_working;
+    $urls_live['dont-miss']->json = json_encode($articles_working, JSON_PRETTY_PRINT);
+    $urls_live['dont-miss']->save();
 endif;
 
 header('Content-Type: application/json');
 header('Cache-Control: no-cache');
 header('Access-Control-Allow-Origin: *');
-echo $articles_live->json;
+echo $urls_live['dont-miss']->json;
