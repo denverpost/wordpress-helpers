@@ -32,16 +32,24 @@ def parse_template(data, template):
 def main(args):
     fh = open('html/single.html', 'rb')
     template = fh.read()
+    entries = {}
+    extras = ['dont-miss', 'hard-news', 'sports']
+    if args.slug in extras:
+        jsonh = open('json/urls_live-%s.json' % args.slug)   
+        entries.update(json.load(jsonh))
+
     for url in args.urls[0]:
         f = feedparser.parse(url)
-        random.shuffle(f['entries'])
-        i = 1
-        while i <= args.limit:
-            if len(f['entries']) <= i:
-                break
-            fh = open('output/%s-%d.html' % (args.slug, i), 'wb')
-            fh.write(parse_template(f['entries'][i-1], template).encode('utf-8', 'replace'))
-            i += 1
+        entries.update(f['entries'])
+
+    random.shuffle(f['entries'])
+    i = 1
+    while i <= args.limit:
+        if len(f['entries']) <= i:
+            break
+        fh = open('output/%s-%d.html' % (args.slug, i), 'wb')
+        fh.write(parse_template(f['entries'][i-1], template).encode('utf-8', 'replace'))
+        i += 1
             
             
 
