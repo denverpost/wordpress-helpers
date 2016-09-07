@@ -55,8 +55,15 @@ class Article {
 
         preg_match('/<meta property="og:title" content="([^"]+)" \/>/', $markup, $matches);
         $this->article['title'] = trim($matches[1]);
+        if ( $this->article['title'] == NULL ):
+            preg_match('/<title>([^<]+)<\/title/', $markup, $matches);
+            $this->article['title'] = trim($matches[1]);
+        endif;
         preg_match('#<meta name="twitter:image" content="([^?]+)\?w=640"#', $markup, $matches);
         $this->article['image'] = $matches[1];
+        if ( $this->article['image'] == NULL ):
+            $this->article['image'] = 'http://www.denverpost.com/wp-content/themes/denverpost/static/images/noimage.jpg';
+        endif;
         preg_match("#'Section' : '([^']+)',#", $markup, $matches);
         $this->article['section'] = $matches[1];
 
@@ -80,6 +87,8 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     if ( $detail === False ):
         $article = new Article($url);
         $detail = $article->retrieve();
+        $detail['url'] = $url;
+        $detail['id'] = round(microtime(true) * 1000);
         $articles_detail->items[] = $detail;
         $articles_detail->save();
     endif;
@@ -87,15 +96,12 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     if ( $action == 'delete' ):
         $articles_tmp = [];
         foreach ( $articles_working as $key => $value ):
-            var_dump($value);
             if ( $url !== $value->url ):
                 $articles_tmp[] = $value;
             endif;
         endforeach;
         $articles_working = $articles_tmp;
     else:
-        $detail['id'] = round(microtime(true) * 1000);
-        $detail['url'] = $url;
         $articles_working[] = $detail;
     endif;
 
@@ -104,6 +110,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     $articles_live->json = json_encode($articles_working, JSON_PRETTY_PRINT);
     $articles_live->save();
 endif;
+
 header('Content-Type: application/json');
 header('Cache-Control: no-cache');
 header('Access-Control-Allow-Origin: *');
