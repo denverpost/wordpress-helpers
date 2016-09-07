@@ -60,12 +60,14 @@ class Url {
             $this->article['title'] = trim($matches[1]);
         endif;
         preg_match('#<meta name="twitter:image" content="([^?]+)\?w=640"#', $markup, $matches);
-        $this->article['image'] = $matches[1];
+        $this->article['media_content'][0]['url'] = $matches[1];
         if ( $this->article['image'] == NULL ):
-            $this->article['image'] = 'http://www.denverpost.com/wp-content/themes/denverpost/static/images/noimage.jpg';
+            $this->article['media_content'][0]['url'] = 'http://www.denverpost.com/wp-content/themes/denverpost/static/images/noimage.jpg';
         endif;
         preg_match("#'Section' : '([^']+)',#", $markup, $matches);
-        $this->article['section'] = $matches[1];
+        if ( $matches[1] !== NULL ):
+            $this->article['tags'][0]['term'] = $matches[1];
+        endif;
         $this->article['link'] = $this->url;
 
         return $this->article;
@@ -100,7 +102,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     if ( $action == 'delete' ):
         $articles_tmp = [];
         foreach ( $articles_working as $key => $value ):
-            if ( $url !== $value->url ):
+            if ( $url !== $value->link ):
                 $articles_tmp[] = $value;
             endif;
         endforeach;
