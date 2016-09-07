@@ -87,6 +87,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     if ( $action == 'delete' ):
         $articles_tmp = [];
         foreach ( $articles_working as $key => $value ):
+            var_dump($value);
             if ( $url !== $value->url ):
                 $articles_tmp[] = $value;
             endif;
@@ -94,6 +95,7 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
         $articles_working = $articles_tmp;
     else:
         $detail['id'] = round(microtime(true) * 1000);
+        $detail['url'] = $url;
         $articles_working[] = $detail;
     endif;
 
