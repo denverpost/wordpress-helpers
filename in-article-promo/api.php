@@ -66,6 +66,7 @@ class Url {
         endif;
         preg_match("#'Section' : '([^']+)',#", $markup, $matches);
         $this->article['section'] = $matches[1];
+        $this->article['link'] = $this->url;
 
         return $this->article;
     }
@@ -91,7 +92,6 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     if ( $detail === False ):
         $article = new Url($url);
         $detail = $article->retrieve();
-        $detail['url'] = $url;
         $detail['id'] = round(microtime(true) * 1000);
         $urls_detail->items[] = $detail;
         $urls_detail->save();
