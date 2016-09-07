@@ -84,19 +84,18 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
         $articles_detail->save();
     endif;
 
-    var_dump($articles_working);
     if ( $action == 'delete' ):
+        $articles_tmp = [];
         foreach ( $articles_working as $key => $value ):
-            if ( $url == $value->url ):
-                unset($articles_working[$key]);
+            if ( $url !== $value->url ):
+                $articles_tmp[] = $value;
             endif;
         endforeach;
+        $articles_working = $articles_tmp;
     else:
         $detail['id'] = round(microtime(true) * 1000);
         $articles_working[] = $detail;
     endif;
-    echo '==========' . "\n";
-    var_dump($articles_working);
 
 
     $articles_live->items = $articles_working;
