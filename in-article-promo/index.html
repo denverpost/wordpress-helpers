@@ -48,6 +48,7 @@ var Article = React.createClass({
   },
 
   handleArticleDelete: function() {
+    console.log(this.props)
     var article = {};
     article.url = this.props.url;
     article.action = 'delete';

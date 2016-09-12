@@ -86,7 +86,7 @@ $urls_detail = new Api('urls_detail');
 if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
     $url = htmlspecialchars($_POST['url']);
     $action = htmlspecialchars($_POST['action']);
-    $articles_working = $urls_live['dont-miss']->items;
+    $urls_working = $urls_live['dont-miss']->items;
 
 
     // See if we already have metadata for this URL in our details json file.
@@ -101,19 +101,19 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST'):
 
     if ( $action == 'delete' ):
         $articles_tmp = [];
-        foreach ( $articles_working as $key => $value ):
+        foreach ( $urls_working as $key => $value ):
             if ( $url !== $value->link ):
                 $articles_tmp[] = $value;
             endif;
         endforeach;
-        $articles_working = $articles_tmp;
+        $urls_working = $articles_tmp;
     else:
-        $articles_working[] = $detail;
+        $urls_working[] = $detail;
     endif;
 
 
-    $urls_live['dont-miss']->items = $articles_working;
-    $urls_live['dont-miss']->json = json_encode($articles_working, JSON_PRETTY_PRINT);
+    $urls_live['dont-miss']->items = $urls_working;
+    $urls_live['dont-miss']->json = json_encode($urls_working, JSON_PRETTY_PRINT);
     $urls_live['dont-miss']->save();
 endif;
 
