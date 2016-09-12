@@ -35,6 +35,7 @@ def main(args):
     entries = []
     extras = ['dont-miss', 'hard-news', 'sports']
     extras = ['dont-miss']
+    extras = []
     if args.slug in extras:
         jsonh = open('json/urls_live-%s.json' % args.slug)   
         entries.append(json.load(jsonh))
