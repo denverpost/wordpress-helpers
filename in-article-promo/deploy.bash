@@ -10,5 +10,6 @@ for SECTION in dont-miss sports hard-news broncos; do
         URL="http://extras.denverpost.com/app/in-article-promo/$SECTION-$ITEM.html"
         echo $URL
         curl -X PURGE $URL
+        curl $URL > /dev/null
     done
 done
