@@ -49,6 +49,7 @@ def main(args):
     while i <= args.limit:
         if len(f['entries']) <= i:
             break
+        print f['entries'][i-1]['link']
         fh = open('output/%s-%d.html' % (args.slug, i), 'wb')
         fh.write(parse_template(f['entries'][i-1], template).encode('utf-8', 'replace'))
         i += 1
