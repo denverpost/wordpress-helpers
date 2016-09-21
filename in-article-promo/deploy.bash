@@ -3,9 +3,21 @@ python2.7 ingest.py http://www.denverpost.com/dont-miss/feed/ --slug dont-miss
 python2.7 ingest.py http://www.denverpost.com/news/feed/ --slug hard-news
 python2.7 ingest.py http://www.denverpost.com/sports/feed/ --slug sports
 python2.7 ingest.py http://www.denverpost.com/sports/denver-broncos/feed/ --slug broncos 
+python2.7 ingest.py http://www.denverpost.com/ask-amy/feed/ --slug ask-amy
+python2.7 ingest.py http://www.denverpost.com/travel/feed/ --slug travel
+python2.7 ingest.py http://www.denverpost.com/lifestyle/food-drink/feed/ --slug food-drink
+python2.7 ingest.py http://www.denverpost.com/lifestyle/restaurants/feed/ --slug restaurants
+python2.7 ingest.py http://www.denverpost.com/entertainment/books/feed/ --slug books
+python2.7 ingest.py http://www.denverpost.com/entertainment/movies/feed/ --slug movies
+python2.7 ingest.py http://www.denverpost.com/lifestyle/home-garden/feed/ --slug home-garden
+python2.7 ingest.py http://www.denverpost.com/entertainment/feed/ --slug entertainment
+python2.7 ingest.py http://www.denverpost.com/news/yourhub/feed/ --slug yourhub
+python2.7 ingest.py http://www.denverpost.com/news/marijuana/feed/ --slug marijuana
+python2.7 ingest.py http://www.denverpost.com/opinion/editorials/feed/ --slug editorials
+python2.7 ingest.py http://www.denverpost.com/politics/feed/ --slug politics
 
 ../ftp.bash --dir $REMOTE_DIR --host $REMOTE_HOST
-for SECTION in dont-miss sports hard-news broncos; do
+for SECTION in dont-miss sports hard-news broncos ask-amy travel food-drink restaurants books movies home-garden entertainment yourhub marijuana editorials politics; do
     for ITEM in {1..5}; do
         URL="http://extras.denverpost.com/app/in-article-promo/$SECTION-$ITEM.html"
         echo $URL
