@@ -15,6 +15,10 @@ python2.7 ingest.py http://www.denverpost.com/news/yourhub/feed/ --slug yourhub
 python2.7 ingest.py http://www.denverpost.com/news/marijuana/feed/ --slug marijuana
 python2.7 ingest.py http://www.denverpost.com/opinion/editorials/feed/ --slug editorials
 python2.7 ingest.py http://www.denverpost.com/politics/feed/ --slug politics
+python2.7 ingest.py http://www.denverpost.com/business/colorado-real-estate/feed/ --slug real-estate
+python2.7 ingest.py http://www.denverpost.com/business/feed/ --slug business
+python2.7 ingest.py http://www.denverpost.com/business/colorado-technology/feed/ --slug tech
+#python2.7 ingest.py  --slug 
 
 ../ftp.bash --dir $REMOTE_DIR --host $REMOTE_HOST
 for SECTION in dont-miss sports hard-news broncos ask-amy travel food-drink restaurants books movies home-garden entertainment yourhub marijuana editorials politics; do
