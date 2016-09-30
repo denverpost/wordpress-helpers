@@ -102,6 +102,7 @@ body:hover .thumb-wrap a {
         <div style="width:100%; display:block; height:0; clear:both;"></div>
         <script>
             //var wait = window.setTimeout(function() { window.location.reload(false); }, 1000);
+            if ( window.top.location.origin + window.top.location.pathname == "{{URL}}" ) document.body.innerHTML = '';
         </script>
     </div>
 </body>
