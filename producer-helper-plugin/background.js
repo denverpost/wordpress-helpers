@@ -21,6 +21,13 @@ return function(info, tab){
 };
 
 function insertSidebar(sidebar) {
+    console.log('hi');
+    console.log(sidebar);
+    if ( document.getElementById('content') )
+    {
+        // We have a textarea, lets put something into it.
+        console.log(document.getElementById('content'))
+    }
     return function(info, tab) {
         console.log(info)
         console.log(tab)
@@ -30,7 +37,7 @@ function insertSidebar(sidebar) {
  * Create a context menu for all that we desire
  */
 chrome.contextMenus.create({
-  "title" : "Insert weather sidebar",
+  "title" : "Insert sidebar",
   "type" : "normal",
   "onclick" : insertSidebar("weather")
 });

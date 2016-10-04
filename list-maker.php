@@ -16,11 +16,14 @@
     <body class="body-copy">
         <h1>List Markup Maker</h1>
         <p>Add &lt;li>'s to each line. Helps most when producing recipes.</p>
+        <form method="POST">
+            <input type="submit" value="Submit">
+            <hr noshade>
+            <p>Paste your list here.</p>
+            <textarea name="content" id="content" cols="100" rows="40" style="clear: both; width:100%; height:80%;">
 <?php
 if ( isset($_POST['content']) ):
 ?>
-            <p>Paste your list here.</p>
-            <textarea name="content" id="content" cols="100" rows="30">
 <ul>
 <?php
     // Strip the custom markup on the paragraphs
@@ -38,17 +41,10 @@ if ( isset($_POST['content']) ):
     echo $content;
 ?></li>
 </ul>
+<?php endif; ?>
 </textarea>
-<?php
-
-else:
-?>
-        <form method="POST">
-            <input type="submit" value="Submit">
-            <hr noshade>
-            <textarea name="content" id="content" cols="100" rows="40" style="clear: both; width:100%; height:80%;"></textarea>
             <input type="submit" value="Submit">
         </form>
-<?php
-endif;
 
+</body>
+</html>
