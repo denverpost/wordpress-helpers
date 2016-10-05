@@ -8,12 +8,31 @@ BOT_ID = os.environ.get("BOT_ID")
 AT_BOT = "<@" + BOT_ID + ">:"
 EXAMPLE_COMMAND = "do"
 
-slack_cliet = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+
+def post_message(channel):
+    """
+        """
+    response="HI"
+    slack_client.api_call("chat.postMessage", channel=channel,
+                          text=response, as_user=True)
 
 def main():
     """
         """
     READ_WEBSOCKET_DELAY = 1
+    if slack_client.rtm_connect():
+        print("RFP-BOT is connected and running")
+        while True:
+            outputs = slack_client.rtm_read()
+            if len(outputs) > 0:
+                for output in outputs: 
+                    if hasattr(output, 'channel'):
+                        print output
+                        post_message(output['channel'])
+            time.sleep(READ_WEBSOCKET_DELAY)
+    else:
+        print("Connection failed")
 
 def get_bot_id():
     api_call = slack_client.api_call("users.list")
