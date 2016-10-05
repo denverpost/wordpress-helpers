@@ -13,13 +13,16 @@ slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
 def post_message(channel):
     """
         """
-    response="HI"
+    # {u'text': u'<@U2KNVHM2P> aaaaaa', u'ts': u'1475698060.000016', u'user': u'U040B56RE', u'team': u'T0408FW33', u'type': u'message', u'channel': u'C2KPA2CUB'}
+    response="HELLO AGAIN"
+    channel="C2KPA2CUB"
     slack_client.api_call("chat.postMessage", channel=channel,
                           text=response, as_user=True)
 
 def main():
     """
         """
+    post_message('')
     READ_WEBSOCKET_DELAY = 1
     if slack_client.rtm_connect():
         print("RFP-BOT is connected and running")
@@ -27,6 +30,7 @@ def main():
             outputs = slack_client.rtm_read()
             if len(outputs) > 0:
                 for output in outputs: 
+                    print output
                     if hasattr(output, 'channel'):
                         print output
                         post_message(output['channel'])
