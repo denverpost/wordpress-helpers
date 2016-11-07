@@ -33,18 +33,26 @@
         <h1>Single-file editor</h1>
         <p></p>
         <form method="POST">
-            <input type="submit" value="Submit">
+            <input type="submit" name="submit" value="Submit">
+            <input type="submit" name="submit" value="Restore Backup">
+            <input type="submit" name="submit" value="Impact Hed">
             <hr noshade>
             <p></p>
             <textarea name="content" id="content" cols="100" rows="60" style="clear: both; width:100%; height:80%;">
 <?php
 if ( isset($_POST['content']) ):
-    // Strip the custom markup on the paragraphs
-    $content = str_replace("\n\n", "\n", $_POST['content']);
-    
-    file_put_contents('headline.html', $content);
-    echo file_get_contents('headline.html');
-    $response = ftp_it('headline.html');
+    if ( $_POST['submit'] == 'Submit' ):
+        // Strip the custom markup on the paragraphs
+        $content = str_replace("\n\n", "\n", $_POST['content']);
+        
+        file_put_contents('headline.html', $content);
+        echo file_get_contents('headline.html');
+        $response = ftp_it('headline.html');
+    elseif ( $_POST['submit'] == 'Restore Backup' ):
+        echo file_get_contents('headline-back.html');
+    elseif ( $_POST['submit'] == 'Impact Hed' ):
+        echo file_get_contents('impact-back.html');
+    endif;
 else:
     echo file_get_contents('headline.html');
 endif; 
