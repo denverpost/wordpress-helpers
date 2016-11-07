@@ -41,8 +41,6 @@
 if ( isset($_POST['content']) ):
     // Strip the custom markup on the paragraphs
     $content = str_replace("\n\n", "\n", $_POST['content']);
-
-    $content = htmlspecialchars($content); 
     
     file_put_contents('headline.html', $content);
     echo file_get_contents('headline.html');
