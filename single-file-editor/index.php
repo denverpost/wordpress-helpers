@@ -36,15 +36,15 @@
             <input type="submit" name="submit" value="Submit">
             <input type="submit" name="submit" value="Restore Backup">
             <input type="submit" name="submit" value="Impact Hed">
+            <input type="submit" name="submit" value="Edit Homepage Links">
+            <input type="submit" name="submit" value="Submit Homepage Links">
             <hr noshade>
             <p></p>
             <textarea name="content" id="content" cols="100" rows="60" style="clear: both; width:100%; height:80%;">
 <?php
 if ( isset($_POST['content']) ):
     if ( $_POST['submit'] == 'Submit' ):
-        // Strip the custom markup on the paragraphs
         $content = str_replace("\n\n", "\n", $_POST['content']);
-        
         file_put_contents('headline.html', $content);
         echo file_get_contents('headline.html');
         $response = ftp_it('headline.html');
@@ -52,6 +52,13 @@ if ( isset($_POST['content']) ):
         echo file_get_contents('headline-back.html');
     elseif ( $_POST['submit'] == 'Impact Hed' ):
         echo file_get_contents('impact-back.html');
+    elseif ( $_POST['submit'] == 'Edit Homepage Links' ):
+        echo file_get_contents('links.html');
+    elseif ( $_POST['submit'] == 'Submit Homepage Links' ):
+        $content = str_replace("\n\n", "\n", $_POST['content']);
+        file_put_contents('links.html', $content);
+        echo file_get_contents('links.html');
+        $response = ftp_it('links.html');
     endif;
 else:
     echo file_get_contents('headline.html');
