@@ -65,7 +65,7 @@ else:
 endif; 
 ?>
 </textarea>
-            <input type="submit" value="Submit">
+            <input type="submit" name="submit" value="Submit">
         </form>
 <?php if ( isset($response) ) echo '<h3 class="alert">' . $response . '</h3>'; ?>
 </body>
