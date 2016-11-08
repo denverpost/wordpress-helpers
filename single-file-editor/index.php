@@ -10,7 +10,7 @@
         //$file_name, $file_directory_local = '', $file_format = 'js', $error_display = FALSE, $file_mode = FTP_ASCII, $file_directory_remote = ''
         $ftp->file_put($filename, $path_cache, '', FALSE, FTP_ASCII, '/DenverPost/app/elections/2016/');
         $ftp->ftp_connection_close();
-        return "\n FTP'd: $filename to <a href='http://extras.denverpost.com/app/elections/2016/headline.html'>http://extras.denverpost.com/app/elections/2016/headline.html</a>";
+        return "\n FTP'd: $filename to <a href='http://extras.denverpost.com/app/elections/2016/$filename'>http://extras.denverpost.com/app/elections/2016/$filename</a>";
     }
 ?>
 <!DOCTYPE html>
