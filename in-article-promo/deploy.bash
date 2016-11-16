@@ -20,10 +20,11 @@ python2.7 ingest.py http://www.denverpost.com/business/colorado-real-estate/feed
 python2.7 ingest.py http://www.denverpost.com/business/feed/ --slug business
 python2.7 ingest.py http://www.denverpost.com/business/colorado-technology/feed/ --slug tech
 python2.7 ingest.py http://www.denverpost.com/tag/featured-homes/feed/ --slug featured-homes
+python2.7 ingest.py http://www.denverpost.com/season-to-share/feed/ --slug season-to-share
 #python2.7 ingest.py  --slug 
 
 ../ftp.bash --dir $REMOTE_DIR --host $REMOTE_HOST
-for SECTION in dont-miss sports hard-news broncos ask-amy travel restaurants books movies home-garden entertainment yourhub marijuana editorials politics real-estate business tech food featured-homes food-drink; do
+for SECTION in dont-miss sports hard-news broncos ask-amy travel restaurants books movies home-garden entertainment yourhub marijuana editorials politics real-estate business tech food featured-homes food-drink season-to-share; do
     for ITEM in {1..5}; do
         URL="http://extras.denverpost.com/app/in-article-promo/$SECTION-$ITEM.html"
         echo $URL
