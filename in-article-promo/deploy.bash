@@ -21,7 +21,7 @@ python2.7 ingest.py http://www.denverpost.com/business/feed/ --slug business
 python2.7 ingest.py http://www.denverpost.com/business/colorado-technology/feed/ --slug tech
 python2.7 ingest.py http://www.denverpost.com/tag/featured-homes/feed/ --slug featured-homes
 python2.7 ingest.py http://www.denverpost.com/season-to-share/feed/ --slug season-to-share
-python2.7 ingest.py http://www.denverpost.com/tag/national-western-stock-show/ --slug stock-show
+python2.7 ingest.py http://www.denverpost.com/tag/national-western-stock-show/feed/ --slug stock-show
 #python2.7 ingest.py  --slug 
 
 ../ftp.bash --dir $REMOTE_DIR --host $REMOTE_HOST
