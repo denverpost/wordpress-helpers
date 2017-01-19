@@ -30,7 +30,7 @@ python2.7 ingest.py http://www.denverpost.com/tag/national-western-stock-show/fe
 ../ftp.bash --dir $REMOTE_DIR --host $REMOTE_HOST
 for SECTION in dont-miss sports hard-news broncos ask-amy travel restaurants books movies home-garden entertainment yourhub marijuana editorials politics real-estate business tech food featured-homes food-drink season-to-share stock-show; do
     for ITEM in {1..5}; do
-        URL="http://extras.denverpost.com/app/in-article-promo/$SECTION-$ITEM.html"
+        URL="https://extras.denverpost.com/app/in-article-promo/$SECTION-$ITEM.html"
         echo $URL
         curl -X PURGE $URL
         curl $URL > /dev/null

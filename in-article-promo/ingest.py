@@ -14,16 +14,17 @@ def parse_template(data, template):
     """ Given the data and a template, return a string.
         """
     img_html = """<div class="thumb-wrap"><div class="thumb-holder"></div><a href="{{URL}}" target="_top"><div class="thumb-img" style="background-image:url('{{IMG}}');"></div></a></div>"""
-    template = template.replace('{{URL}}', data['link'])
+    template = template.replace('{{URL}}', data['link'].replace('http:','https:'))
+    template = template.replace('{{URLX}}', data['link'])
     template = template.replace('{{TITLE}}', data['title'])
     #template = template.replace('{{BLURB}}', data['summary'])
-    img_html = img_html.replace('{{URL}}', data['link'])
+    img_html = img_html.replace('{{URL}}', data['link'].replace('http:','https:'))
     if hasattr(data, 'tags') and len(data['tags']) > 0:
         template = template.replace('{{SECTION}}', data['tags'][0]['term'])
     else:
         template = template.replace('<h2><a href="{{URL}}" target="_top">{{SECTION}}</a></h2>', '')
     if hasattr(data, 'media_content') and len(data['media_content']) > 0:
-        template = template.replace('{{IMG}}', '%s?w=150' % data['media_content'][0]['url'])
+        template = template.replace('{{IMG}}', '%s?w=150' % data['media_content'][0]['url'].replace('http:','https:'))
     else:
         template = template.replace(img_html, '')
 
