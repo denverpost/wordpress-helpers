@@ -17,7 +17,9 @@ python2.7 ingest.py http://www.denverpost.com/entertainment/feed/ --slug enterta
 python2.7 ingest.py http://www.denverpost.com/news/yourhub/feed/ --slug yourhub
 python2.7 ingest.py http://www.denverpost.com/news/marijuana/feed/ --slug marijuana
 python2.7 ingest.py http://www.denverpost.com/opinion/editorials/feed/ --slug editorials
-python2.7 ingest.py http://www.denverpost.com/politics/feed/ --slug politics
+python2.7 ingest.py http://www.denverpost.com/politics/feed/ --slug general-politics
+python2.7 ingest.py http://www.denverpost.com/politics/donald-trump-administration/feed/ --slug trump-administration
+python2.7 ingest.py http://www.denverpost.com/lifestyle/feed/ --slug lifestyle
 python2.7 ingest.py http://www.denverpost.com/business/colorado-real-estate/feed/ --slug real-estate
 python2.7 ingest.py http://www.denverpost.com/business/feed/ --slug business
 python2.7 ingest.py http://www.denverpost.com/business/colorado-technology/feed/ --slug tech
