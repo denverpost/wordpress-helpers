@@ -31,7 +31,7 @@ python2.7 ingest.py http://www.denverpost.com/politics/colorado-legislature/feed
 
 # Bust the fast.ly cache
 ../ftp.bash --dir $REMOTE_DIR --host $REMOTE_HOST
-for SECTION in dont-miss sports hard-news broncos ask-amy travel restaurants books movies home-garden entertainment yourhub marijuana editorials politics real-estate business tech food featured-homes food-drink season-to-share stock-show colorado-legislature; do
+for SECTION in dont-miss sports hard-news broncos ask-amy travel restaurants books movies home-garden entertainment yourhub marijuana editorials politics real-estate business tech food featured-homes food-drink season-to-share stock-show colorado-legislature lifestyle trump-administration; do
     for ITEM in {1..5}; do
         URL="https://extras.denverpost.com/app/in-article-promo/$SECTION-$ITEM.html"
         echo $URL
